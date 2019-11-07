@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+// complied java loc
+package com.test.jdh.model;
+
+///////////////////////////////
+
+// same
+enum Sex{
+    MAN=0;
+    WOMAN=1;
+}
+
+message UserRequest{
+    string id=1;
+}
+
+message UserDetail{
+    string id=1;
+    string name=2;
+    int32 age=6;
+    Sex sex=4;
+    string password=3;
+    string address=5;
+    repeated string hobbies=7;
+    map<string,string> auth=8;
+}
+
+
+service UserService{
+                                                        // { } ??
+    rpc getUserDetail(UserRequest) returns (UserDetail) {};
+}

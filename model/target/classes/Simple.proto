@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+// style > first Char : UpperCase -_-
+
+package com.test.jdh.model;
+
+//////////////////////////////////////
+
+
+message SimpleRequest{
+    int32 seq = 1;
+}
+
+message SimpleResponse{
+    int32 seq=1;
+    string message=2;
+}
+
+service SimpleService{
+    // client -> server
+                        // stream client N: server 1 ?         // returns? numbers!
+    rpc ClientSideStream(stream SimpleRequest) returns (SimpleResponse);
+
+    // server -> client?
+                        // 1:1?
+    rpc ServerSideStream(SimpleRequest) returns (stream SimpleResponse);
+
+    // to client?
+    rpc SimpleServerToClient(SimpleRequest) returns (SimpleResponse);
+
+    // both side?
+    rpc BiDirectionalStream(stream SimpleRequest) returns (stream SimpleResponse);
+
+}

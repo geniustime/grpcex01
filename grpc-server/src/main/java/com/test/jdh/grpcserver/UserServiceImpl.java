@@ -38,7 +38,7 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase {
 
         Optional<String> req = Optional.ofNullable(request.getId());
 
-        log.info("Get Request : {}", req.orElse("Null"));
+        log.info("///// [UserServiceImpl-getUserDetail] Get Request : {}", req.orElse("Null"));
 
         if(req.isPresent()){
             if(req.get().toUpperCase().equals(SOME_USER_ID.toUpperCase())){
@@ -46,7 +46,7 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase {
                 responseObserver.onCompleted();
             }
         }else{
-            responseObserver.onError(new RuntimeException("Bad wrong request.."));
+            responseObserver.onError(new RuntimeException("///// [UserServiceImpl-getUserDetail] Bad wrong request.."));
         }
     }
 

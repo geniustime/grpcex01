@@ -33,7 +33,7 @@ public class GrpcClientApplication implements CommandLineRunner {
 
 //    ???
     public void callBack(User.UserDetail userDetail){
-        log.info("received. response info : {}", userDetail);
+        log.info("///// [main] received. response info : {}", userDetail);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class GrpcClientApplication implements CommandLineRunner {
         asyncSingle.simpleServerToClient(simpleRequest, new StreamObserver<Simple.SimpleResponse>() {
             @Override
             public void onNext(Simple.SimpleResponse simpleResponse) {
-                log.info("async single : {}", simpleResponse.getMessage());
+                log.info("///// [async single] async single : {}", simpleResponse.getMessage());
             }
 
             @Override
@@ -63,7 +63,7 @@ public class GrpcClientApplication implements CommandLineRunner {
 
             @Override
             public void onCompleted() {
-                log.info("async single done.");
+                log.info("///// [async single] async single done.");
             }
         });
 
@@ -73,7 +73,7 @@ public class GrpcClientApplication implements CommandLineRunner {
         async.serverSideStream(simpleRequest, new StreamObserver<Simple.SimpleResponse>() {
             @Override
             public void onNext(Simple.SimpleResponse simpleResponse) {
-                log.info("async {} : ", simpleResponse.getMessage());
+                log.info("///// [async stream] async {} : ", simpleResponse.getMessage());
             }
 
             @Override
@@ -83,8 +83,8 @@ public class GrpcClientApplication implements CommandLineRunner {
 
             @Override
             public void onCompleted() {
-                log.info("async received, server call finished.");
-                log.info("async push finished.");
+                log.info("///// [async stream-onCompleted] async received, server call finished.");
+                log.info("///// [async stream-onCompleted] async push finished.");
             }
         });
 
@@ -92,8 +92,8 @@ public class GrpcClientApplication implements CommandLineRunner {
         SimpleServiceGrpc.SimpleServiceBlockingStub blockingStub = SimpleServiceGrpc.newBlockingStub(channel);
         Simple.SimpleResponse simpleResponse = blockingStub.simpleServerToClient(simpleRequest);
 
-        log.info("sync single message : {}", simpleResponse.getMessage());
-        log.info("sync single message done.");
+        log.info("///// [blocking single] sync single message : {}", simpleResponse.getMessage());
+        log.info("///// [blocking single] sync single message done.");
 
 //      blocking streams???
         SimpleServiceGrpc.SimpleServiceBlockingStub blockingStream = SimpleServiceGrpc.newBlockingStub(channel);
@@ -101,10 +101,10 @@ public class GrpcClientApplication implements CommandLineRunner {
 
         while(itr.hasNext()){
             Simple.SimpleResponse response = itr.next();
-            log.info("sync message : {}", response.getMessage());
+            log.info("///// [blocking streams] sync message : {}", response.getMessage());
         }
-        log.info("sync received, server call finished.");
-        log.info("sync push finished.");
+        log.info("///// [blocking streams] sync received, server call finished.");
+        log.info("///// [blocking streams] sync push finished.");
 
 
 //      client side stream???
@@ -112,7 +112,7 @@ public class GrpcClientApplication implements CommandLineRunner {
         StreamObserver<Simple.SimpleRequest> requestStreamObserver = simpleServiceStub.clientSideStream(new StreamObserver<Simple.SimpleResponse>() {
             @Override
             public void onNext(Simple.SimpleResponse simpleResponse) {
-                log.info("client side stream!!!!! {} ", simpleResponse.getMessage());
+                log.info("///// [client side stream-onNext] client side stream!!!!! {} ", simpleResponse.getMessage());
             }
 
             @Override
@@ -122,7 +122,7 @@ public class GrpcClientApplication implements CommandLineRunner {
 
             @Override
             public void onCompleted() {
-                log.info("DDDONE!!!");
+                log.info("///// [client side stream-onCompleted] DDDONE!!!");
             }
         });
         requestStreamObserver.onCompleted();
@@ -133,7 +133,7 @@ public class GrpcClientApplication implements CommandLineRunner {
         StreamObserver<Simple.SimpleRequest> simpleRequestStreamObserver = serviceStub.biDirectionalStream(new StreamObserver<Simple.SimpleResponse>() {
             @Override
             public void onNext(Simple.SimpleResponse simpleResponse) {
-                log.info("양방향임 {}", simpleResponse.getMessage());
+                log.info("///// [both stream-onNext] 양방향임 {}", simpleResponse.getMessage());
             }
 
             @Override
@@ -143,7 +143,7 @@ public class GrpcClientApplication implements CommandLineRunner {
 
             @Override
             public void onCompleted() {
-                log.info("양방향 끝");
+                log.info("///// [both stream-onCompleted] 양방향 끝");
             }
         });
         simpleRequestStreamObserver.onNext(Simple.SimpleRequest.newBuilder().setSeq(11).build());
@@ -153,6 +153,6 @@ public class GrpcClientApplication implements CommandLineRunner {
 
         // channel closed.
         channel.awaitTermination(20, TimeUnit.SECONDS);
-        log.info("CHANNEL TERMINATED!!!!");
+        log.info("///// [channel] CHANNEL TERMINATED!!!!");
     }
 }

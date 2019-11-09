@@ -41,7 +41,7 @@ public class GrpcServer {
 
         server.start();
 
-        log.info("start server, port : {}", server.getPort());
+        log.info("/////[SERVER] start server, port : {}", server.getPort());
 
         Runtime.getRuntime().addShutdownHook(new Thread(GrpcServer.this::stop));
         server.awaitTermination();
